@@ -56,7 +56,7 @@ export default {
       });
     },
   },
-  mounted: function () {
+  mounted: function () {   
     this.getPokemonData(); //method1 will execute at pageload
   },
 };

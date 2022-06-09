@@ -1,67 +1,117 @@
 <template>
-  <div class="container">
-    <table class="table" style="margin-top: 50px">
-      <thead>
-        <th scope="col">Image</th>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Abilities/ability/name</th>
-        <th scope="col">Hp/attack/defense</th>
-        <th scope="col">Weight</th>
-        <th scope="col">Height</th>
-      </thead>
-      <tbody>
-        <tr>
-          <td><img :src="pokemonDetail.sprites.back_default" /></td>
+  <div>
+    <div class="container">
+      <table class="table" style="margin-top: 50px">
+        <thead>
+          <th scope="col">Image</th>
+          <th scope="col">Name</th>
+          <th scope="col">Type</th>
+          <th scope="col">Abilities/ability/name</th>
+          <th scope="col">Hp/attack/defense</th>
+          <th scope="col">Weight</th>
+          <th scope="col">Height</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td><img :src="pokemonDetail.sprites.back_default" /></td>
 
-          <!-- <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png"> -->
-          <!-- <td>
+            <!-- <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png"> -->
+            <!-- <td>
             {{pokemonDetail.sprites.back_default}}
           </td> -->
-          <td>{{ pokemonDetail.name }}</td>
-          <td>{{ pokemonDetail.types[0].type.name }}</td>
-          <td>
-            {{ pokemonDetail.abilities[0].ability.name +" "+ pokemonDetail.abilities[1].ability.name }}
-          </td>
-
-          <!-- <td v-for="item in pokemonDetail.abilities.ability" :key="item.id">
-            {{ item }}
-          </td> -->
-          <!--gece bakılıcak 2 array var-->
-
-          <td>
+            <td>{{ pokemonDetail.name }}</td>
+            <td>{{ pokemonDetail.types[0].type.name }}</td>
+            <td>
+              <ul>
+                <li v-for="item in pokemonDetail.abilities" :key="item.id">
+                  {{ item.ability.name }}
+                </li>
+              </ul>
+            </td>
+            <!-- <td>
             {{
+              pokemonDetail.abilities[0].ability.name +
+              " " +
+              pokemonDetail.abilities[1].ability.name
+            }}
+          </td> -->
+            <td>
+              <ul>
+                <li
+                  v-for="(item, index) in pokemonDetail.stats.slice(0, 3)"
+                  :key="item.id"
+                >
+                  {{ index }} {{ item.stat.name }}
+                </li>
+              </ul>
+              <!-- {{
               pokemonDetail.stats[0].stat.name +
               " " +
               pokemonDetail.stats[1].stat.name +
               " " +
               pokemonDetail.stats[2].stat.name
-            }}
-          </td>
+            }} -->
+            </td>
 
-          <td>{{ pokemonDetail.weight }}</td>
-          <td>{{ pokemonDetail.height }}</td>
+            <td>{{ pokemonDetail.weight }}</td>
+            <td>{{ pokemonDetail.height }}</td>
+          </tr>
+        </tbody>
+
+        <td v-for="item in pokemonDetail.abilities.ability" :key="item.id">
+          {{ item }}
+        </td>
+      </table>
+      <thead>
+        <th>Abilities/ability/name</th>
+      </thead>
+      <tbody>
+        <tr v-for="item in pokemonDetail.abilities" :key="item.id">
+          <td>
+            {{ item.ability.name }}
+          </td>
         </tr>
+      </tbody>
+      <router-link :to="{ name: 'PokemonView' }"
+        ><button class="btn btn-info">Pokemonlar</button></router-link
+      >
+      <button @click="setLocalStorageGetData" class="btn btn-success">
+        Favorilere gönder
+      </button>
+
+      <button @click="getLocalStorageGetData" class="btn btn-info">
+        Favorilerden çağır
+      </button>
+
+      <button @click="deleteLocalStorageGetData" class="btn btn-danger">
+        Favorilerden sil
+      </button>
+      {{ $route.params.pokemonId }}
+    </div>
+    <div class="container">
+      <table class="table" style="margin-top: 50px">
+        <H2>Local storage getData</H2>
 
         <thead>
-          <th>Abilities/ability/name</th>
+          <th scope="col">Image</th>
+          <th scope="col">Name</th>
+          <th scope="col">Type</th>
+          <th scope="col">Weight</th>
+          <th scope="col">Height</th>
         </thead>
-        <tbody><tr v-for="item in pokemonDetail.abilities" :key="item.id">
-          <td>
-           {{item.ability.name}}
-        </td>        
-        </tr>
-        </tbody>    
-      </tbody>
-    </table>    
-    <router-link :to="{ name: 'PokemonView' }"
-      ><button class="btn btn-info">Pokemonlar</button></router-link
-    >
-    <button @click="addFavouritePokemon" class="btn btn-success">Favorilere ekle</button>
-
+        <tbody>
+          <tr v-for="item in akif" :key="item.id">
+		   
+            <td></td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.typesName }}</td>
+            <td>{{ item.weight }}</td>
+            <td>{{ item.height }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-   
-  <!-- {{this.$route.params}} -->
 </template>
 
 <script>
@@ -72,23 +122,65 @@ export default {
   data() {
     return {
       pokemonDetail: [],
+      localData: localStorage.getItem("pokemonDetail"),
+      akif: [],
     };
   },
   methods: {
     getPokemonDetail: function (id) {
       axios.get("https://pokeapi.co/api/v2/pokemon/" + id).then((res) => {
+        debugger;
         this.pokemonDetail = res.data;
         console.log(res.data);
       });
     },
-    addFavouritePokemon:function(){
-this.pokemonDetail = JSON.parse(localStorage.getItem("pokemonDetail"));
-     }
+    setLocalStorageGetData: function () {
+      debugger;
+      localStorage.setItem(
+        "pokemonDetail",
+        JSON.stringify(
+          this.pokemonDetail.sprites.back_default +
+            " " +
+            this.pokemonDetail.name +
+            " " +
+            this.pokemonDetail.types[0].type.name +
+            " " +
+            this.pokemonDetail.weight +
+            " " +
+            this.pokemonDetail.height
+        )
+      );
+    },
+    getLocalStorageGetData: function () {
+      debugger;
+      this.localData = localStorage.getItem("pokemonDetail");
+      this.localData.split(" ");
+      this.akif = this.localData.split(" ");
+      var x = {};
+      x.image = this.akif[0];
+      x.name = this.akif[1];
+      x.typesName = this.akif[2];
+      x.weight = this.akif[3];
+      x.height = this.akif[4];
+      this.akif.push(x);
+    },
+    deleteLocalStorageGetData: function () {
+      debugger;
+      localStorage.removeItem("pokemonDetail");
+      this.localData = localStorage.getItem("pokemonDetail");
+    },
   },
+
   mounted: function () {
     debugger;
     var pokemonId = this.$route.params.pokemonId;
     this.getPokemonDetail(pokemonId); //method1 will execute at pageload
+
+    // if (localStorage.getItem("pokemonDetail") != null) {
+    //   this.pokemonDetail = JSON.parse(localStorage.getItem("pokemonDetail"));
+    // }
+
+    // this.setLocalStorageGetData();
   },
 };
 </script>

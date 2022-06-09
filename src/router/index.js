@@ -9,7 +9,7 @@ const routes = [{
         name: 'PokemonView',
         component: PokemonView
     }, {
-        path: '/PokemonDetail',
+        path: '/PokemonDetail/:pokemonId',
         name: 'PokemonDetail',
         component: PokemonDetail
     },
@@ -25,6 +25,8 @@ const routes = [{
 ]
 
 const router = new VueRouter({
+
+
     mode: 'history',
     base: process.env.BASE_URL,
     routes
