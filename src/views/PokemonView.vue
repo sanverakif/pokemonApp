@@ -6,22 +6,24 @@
           <th>Id</th>
           <th>Name</th>
           <th>Url</th>
-          <th></th>
+          <th>Favoriler</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in pokemonData" :key="item.id">
           <td>{{ item.Id }}</td>
           <td>{{ item.Name }}</td>
-          <td>{{ item.Url }}</td>
           <td>
-            <v-btn class="btn btn-info">
-              <router-link
-                :to="{ name: 'PokemonDetail', params: { pokemonId: item.Id } }"
-                >Detay</router-link
-              ></v-btn
-            >
+            <button @click="gotoDetail(item.Id)" class="btn btn-info">
+              Detay
+            </button>
+            <!-- <router-link
+              :to="{ name: 'PokemonDetail', params: { pokemonId: item.Id } }"
+              ><v-btn class="btn btn-info">Detay</v-btn></router-link
+            > -->
           </td>
+          <!-- <td><i class="fa-solid fa-star"></i></td> -->
+          <td>fav ürün buraya gelicek</td>          
         </tr>
       </tbody>
     </table>
@@ -55,8 +57,18 @@ export default {
         console.log(this.pokemonData);
       });
     },
+    //roota parametre ekledim Evente çağırırken döngüde olduğu için id yi atayabildim.
+    gotoDetail: function (id) {
+      debugger;
+      this.$router.push("PokemonDetail/" + id);
+
+      // this.$router.push('/PokemonDetail');
+      // this.$router.push({ name: "PokemonDetail", params: { id: this.pokemonItem. Id } });
+      // this.$router.push({ name: "PokemonDetail", params: { pokemonId: this.pokemonItem.Id } });
+      // this.$router.push({ name: "PokemonDetail" + this.$route.params.pokemonItem.id });
+    },
   },
-  mounted: function () {   
+  mounted: function () {
     this.getPokemonData(); //method1 will execute at pageload
   },
 };

@@ -62,21 +62,11 @@
           {{ item }}
         </td>
       </table>
-      <thead>
-        <th>Abilities/ability/name</th>
-      </thead>
-      <tbody>
-        <tr v-for="item in pokemonDetail.abilities" :key="item.id">
-          <td>
-            {{ item.ability.name }}
-          </td>
-        </tr>
-      </tbody>
       <router-link :to="{ name: 'PokemonView' }"
         ><button class="btn btn-info">Pokemonlar</button></router-link
       >
       <button @click="setLocalStorageGetData" class="btn btn-success">
-        Favorilere gönder
+        Favorilere ekle
       </button>
 
       <button @click="getLocalStorageGetData" class="btn btn-info">
@@ -86,7 +76,7 @@
       <button @click="deleteLocalStorageGetData" class="btn btn-danger">
         Favorilerden sil
       </button>
-      {{ $route.params.pokemonId }}
+      <!-- {{ $route.params.pokemonId }} -->
     </div>
     <div class="container">
       <table class="table" style="margin-top: 50px">
@@ -180,7 +170,7 @@ export default {
     // }
 
     // this.setLocalStorageGetData();
-	this.getLocalStorageGetData();
+    this.getLocalStorageGetData();
   },
 };
 </script>
