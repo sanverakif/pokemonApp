@@ -15,7 +15,7 @@
           <td>{{ item.Name }}</td>
           <td>{{ item.Url }}</td>
           <td>
-            <v-btn :href="link" class="btn btn-info">
+            <v-btn class="btn btn-info">
               <router-link
                 :to="{ name: 'PokemonDetail', params: { pokemonId: item.Id } }"
                 >Detay</router-link

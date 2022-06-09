@@ -101,8 +101,7 @@
         </thead>
         <tbody>
           <tr v-for="item in akif" :key="item.id">
-		   
-            <td></td>
+            <td>{{ item.image }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.typesName }}</td>
             <td>{{ item.weight }}</td>
@@ -181,6 +180,7 @@ export default {
     // }
 
     // this.setLocalStorageGetData();
+	this.getLocalStorageGetData();
   },
 };
 </script>
