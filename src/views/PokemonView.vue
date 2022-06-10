@@ -23,7 +23,6 @@
             > -->
           </td>
           <!-- <td><i class="fa-solid fa-star"></i></td> -->
-          <td>fav ürün buraya gelicek</td>          
         </tr>
       </tbody>
     </table>
@@ -34,7 +33,6 @@
 import axios from "axios";
 export default {
   name: "PokemonView",
-
   components: {},
   data() {
     return {

@@ -65,15 +65,42 @@
       <router-link :to="{ name: 'PokemonView' }"
         ><button class="btn btn-info">Pokemonlar</button></router-link
       >
-      <button @click="setLocalStorageGetData" class="btn btn-success">
+      <!-- <button
+        class="btn btn-primary"
+        style="margin-left: 5px"
+        v-if="getData"
+        @click="show = !show"
+        v-show="show"
+      >
+        ekle
+      </button>
+      <button
+        class="btn btn-danger"
+        style="margin-left: 5px"
+        v-if="getData"
+        @click="show = !show"
+        v-show="!show"
+      >
+        çıkar
+      </button> -->
+
+      <button
+        @click="setLocalStorageGetData(true), (show = !show)"
+        class="btn btn-success" style="margin-left:5px"
+        v-show="show"
+      >
         Favorilere ekle
       </button>
 
-      <button @click="getLocalStorageGetData" class="btn btn-info">
+      <!-- <button @click="getLocalStorageGetData" class="btn btn-info">
         Favorilerden çağır
-      </button>
+      </button> -->
 
-      <button @click="deleteLocalStorageGetData" class="btn btn-danger">
+      <button
+        @click="deleteLocalStorageGetData(false), (show = show)"
+        class="btn btn-danger" style="margin-left:5px"
+        v-show="!show"
+      >
         Favorilerden sil
       </button>
       <!-- {{ $route.params.pokemonId }} -->
@@ -110,9 +137,11 @@ export default {
   components: {},
   data() {
     return {
+      userLoggedIn: true,
       pokemonDetail: [],
       localData: localStorage.getItem("pokemonDetail"),
       akif: [],
+      show: true,
     };
   },
   methods: {
@@ -123,7 +152,7 @@ export default {
         console.log(res.data);
       });
     },
-    setLocalStorageGetData: function () {
+    setLocalStorageGetData: function (show) {
       debugger;
       localStorage.setItem(
         "pokemonDetail",
@@ -139,6 +168,7 @@ export default {
             this.pokemonDetail.height
         )
       );
+      this.show = show;
     },
     getLocalStorageGetData: function () {
       debugger;
@@ -153,11 +183,22 @@ export default {
       x.height = this.akif[4];
       this.akif.push(x);
     },
-    deleteLocalStorageGetData: function () {
+    deleteLocalStorageGetData: function (shows) {
       debugger;
       localStorage.removeItem("pokemonDetail");
       this.localData = localStorage.getItem("pokemonDetail");
+      this.show = !shows;
     },
+    // getData: function (show) {
+    //   debugger;
+    //   if (this.setLocalStorageGetData != null) {
+    //     debugger;
+    //     this.show = show;
+    //   }
+    //   else if(this.deleteLocalStorageGetData != null){
+    //        this.show = !show;
+    //   }
+    // },
   },
 
   mounted: function () {
@@ -170,9 +211,13 @@ export default {
     // }
 
     // this.setLocalStorageGetData();
-    this.getLocalStorageGetData();
+    //this.getLocalStorageGetData();
   },
 };
 </script>
 
-<style></style>
+<style>
+.btnHidden {
+  visibility: hidden !important;
+}
+</style>
