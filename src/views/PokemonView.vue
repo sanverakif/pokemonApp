@@ -22,7 +22,11 @@
               ><v-btn class="btn btn-info">Detay</v-btn></router-link
             > -->
           </td>
-          <!-- <td><i class="fa-solid fa-star"></i></td> -->
+          <td>           
+            <!-- <pokemon-detail @click="dataEklendi=favData($event)">Yeni data</pokemon-detail> -->
+            <!-- <p v-if="favDataAdd">eklendi</p>
+            <p v-if="!favDataAdd">eklenmedi</p> -->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -31,20 +35,23 @@
 
 <script>
 import axios from "axios";
+// import PokemonDetail from "../components/PokemonDetail";
 export default {
   name: "PokemonView",
-  components: {},
+  // components: { PokemonDetail },
   data() {
     return {
       pokemonData: [],
+      title: "data geldi",
     };
   },
   methods: {
+    updateTitleText: function (title) {
+      this.title = title;
+    },
     getPokemonData: function () {
       debugger;
       axios.get("https://pokeapi.co/api/v2/pokemon").then((res) => {
-        debugger;
-
         res.data.results.forEach((row) => {
           var pokemonItem = {};
           pokemonItem.Id = row.url.split("/")[row.url.split("/").length - 2];

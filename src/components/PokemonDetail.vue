@@ -62,6 +62,7 @@
           {{ item }}
         </td>
       </table>
+
       <router-link :to="{ name: 'PokemonView' }"
         ><button class="btn btn-info">Pokemonlar</button></router-link
       >
@@ -86,7 +87,8 @@
 
       <button
         @click="setLocalStorageGetData(true), (show = !show)"
-        class="btn btn-success" style="margin-left:5px"
+        class="btn btn-success"
+        style="margin-left: 5px"
         v-show="show"
       >
         Favorilere ekle
@@ -98,14 +100,19 @@
 
       <button
         @click="deleteLocalStorageGetData(false), (show = show)"
-        class="btn btn-danger" style="margin-left:5px"
+        class="btn btn-danger"
+        style="margin-left: 5px"
         v-show="!show"
       >
         Favorilerden sil
       </button>
+      <ul v-for="item in favoriPokemon" :key="item.id">
+        <li>{{ item }}</li>
+      </ul>
+      <!-- {{ favoriPokemon }} -->
       <!-- {{ $route.params.pokemonId }} -->
     </div>
-    <div class="container">
+    <!-- <div class="container">
       <table class="table" style="margin-top: 50px">
         <H2>Local storage getData</H2>
 
@@ -126,7 +133,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -137,11 +144,11 @@ export default {
   components: {},
   data() {
     return {
-      userLoggedIn: true,
       pokemonDetail: [],
       localData: localStorage.getItem("pokemonDetail"),
       akif: [],
       show: true,
+      favoriPokemon: [],
     };
   },
   methods: {
@@ -153,26 +160,38 @@ export default {
       });
     },
     setLocalStorageGetData: function (show) {
-      debugger;
-      localStorage.setItem(
-        "pokemonDetail",
-        JSON.stringify(
-          this.pokemonDetail.sprites.back_default +
-            " " +
-            this.pokemonDetail.name +
-            " " +
-            this.pokemonDetail.types[0].type.name +
-            " " +
-            this.pokemonDetail.weight +
-            " " +
-            this.pokemonDetail.height
-        )
-      );
+      if (this.pokemonDetail != null) {
+        localStorage.setItem(
+          "pokemonDetail",
+          JSON.stringify(
+            this.pokemonDetail.sprites.back_default +
+              " " +
+              this.pokemonDetail.name +
+              " " +
+              this.pokemonDetail.types[0].type.name +
+              " " +
+              this.pokemonDetail.weight +
+              " " +
+              this.pokemonDetail.height
+          )
+        );
+        this.favoriPokemon.push(
+          this.pokemonDetail.sprites.back_default,
+          this.pokemonDetail.name,
+          this.pokemonDetail.types[0].type.name,
+          this.pokemonDetail.weight,
+          this.pokemonDetail.height
+        );
+      }
+      // this.favoriPokemon.push(this.localData)
+      this.favoriPokemon.push(this.localData);
+      //  localStorage.setItem("pokemonDetail");
+      // this.favoriPokemon.push(this.localStorage.setItem("favoriPokemon"));
       this.show = show;
     },
+
     getLocalStorageGetData: function () {
-      debugger;
-      this.localData = localStorage.getItem("pokemonDetail");
+      // this.localData = localStorage.getItem("pokemonDetail");
       this.localData.split(" ");
       this.akif = this.localData.split(" ");
       var x = {};
@@ -181,37 +200,24 @@ export default {
       x.typesName = this.akif[2];
       x.weight = this.akif[3];
       x.height = this.akif[4];
+
       this.akif.push(x);
     },
     deleteLocalStorageGetData: function (shows) {
       debugger;
       localStorage.removeItem("pokemonDetail");
-      this.localData = localStorage.getItem("pokemonDetail");
+      // this.localData = localStorage.getItem("pokemonDetail");
       this.show = !shows;
     },
-    // getData: function (show) {
-    //   debugger;
-    //   if (this.setLocalStorageGetData != null) {
-    //     debugger;
-    //     this.show = show;
-    //   }
-    //   else if(this.deleteLocalStorageGetData != null){
-    //        this.show = !show;
-    //   }
-    // },
   },
 
   mounted: function () {
-    debugger;
     var pokemonId = this.$route.params.pokemonId;
     this.getPokemonDetail(pokemonId); //method1 will execute at pageload
 
     // if (localStorage.getItem("pokemonDetail") != null) {
     //   this.pokemonDetail = JSON.parse(localStorage.getItem("pokemonDetail"));
     // }
-
-    // this.setLocalStorageGetData();
-    //this.getLocalStorageGetData();
   },
 };
 </script>
