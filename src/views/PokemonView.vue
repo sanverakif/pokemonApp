@@ -22,10 +22,8 @@
               ><v-btn class="btn btn-info">Detay</v-btn></router-link
             > -->
           </td>
-          <td>           
-            <!-- <pokemon-detail @click="dataEklendi=favData($event)">Yeni data</pokemon-detail> -->
-            <!-- <p v-if="favDataAdd">eklendi</p>
-            <p v-if="!favDataAdd">eklenmedi</p> -->
+          <td>
+            <h6>Sonuç: {{ hesaplama }}</h6>
           </td>
         </tr>
       </tbody>
@@ -35,22 +33,23 @@
 
 <script>
 import axios from "axios";
-// import PokemonDetail from "../components/PokemonDetail";
+import PokemonDetail from "../components/PokemonDetail";
 export default {
   name: "PokemonView",
-  // components: { PokemonDetail },
+  components: { PokemonDetail },
+
   data() {
     return {
       pokemonData: [],
-      title: "data geldi",
+      hesaplama: "değer bekleniyor",
     };
   },
   methods: {
-    updateTitleText: function (title) {
-      this.title = title;
+    gelen(sonucdata) {
+      debugger;
+      this.hesaplama = sonucdata;
     },
     getPokemonData: function () {
-      debugger;
       axios.get("https://pokeapi.co/api/v2/pokemon").then((res) => {
         res.data.results.forEach((row) => {
           var pokemonItem = {};
@@ -64,7 +63,6 @@ export default {
     },
     //roota parametre ekledim Evente çağırırken döngüde olduğu için id yi atayabildim.
     gotoDetail: function (id) {
-      debugger;
       this.$router.push("PokemonDetail/" + id);
 
       // this.$router.push('/PokemonDetail');
